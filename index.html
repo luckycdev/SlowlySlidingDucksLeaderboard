@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Slowly Sliding Ducks Leaderboard</title>
+    <link rel="icon" type="image/png" href="assets/logo.png"/>
+    <link href="index.css" media="screen" rel="stylesheet" type="text/css" />
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Slowly Sliding Ducks Leaderboard">
+    <meta name="keywords" content="PPDS, Slowly Sliding Ducks, Slowly Sliding Ducks Leaderboard, Placid Plastic Duck Simulator, Placid Plastic Deck">
+    <meta name="author" content="luckycdev">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property='og:description'  content='Slowly Sliding Ducks Leaderboard'>
+    <meta property='og:title'  content='Slowly Sliding Ducks Leaderboard'>
+    <meta property='og:url'  content='https://ssd.luckyc.dev'>
+    <meta property="og:image"  content="https://ssd.luckyc.dev/assets/logo.png">
+    <meta name="theme-color" content="#7ac0de">
+
+</head>
+
+<body>
+
+<div class="social-icons">
+  <a href="https://discord.gg/AQ4sDF6Mkz" target="_blank"><img src="assets/discord.svg" class="social"></a>
+  <a href="https://github.com/luckycdev/SlowlySlidingDucksLeaderboard" target="_blank"><img src="assets/github.svg" class="social"></a>
+</div>
+
+    <a href="full/index.html" class="other-page">Full Leaderboard</a>
+    <div id="playerCount" class="playerCount">Loading...</div>
+    <img src="assets/logo.png" class="logo">
+    <h1>Slowly Sliding Ducks Leaderboard</h1>
+    <div class="loading" id="loading">Loading...</div>
+
+    <table id="leaderboard" style="display:none;">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>XP</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button id="loadMoreButton" style="display:none;">Load More</button>
+    <div id="loadMoreMessage" class="loadMoreMessage"></div>
+
+    <iframe src="https://store.steampowered.com/widget/2485410/" frameborder="0" width="646" height="190"></iframe>
+
+    <script src="index.js"></script>
+    <script>
+        loadInitialLeaderboard();
+    </script>
+
+</body>
+</html>
