@@ -10,28 +10,17 @@ const playerCountDiv = document.getElementById("playerCount");
 
 async function fetchPlayerCount() {
     try {
-        const appIds = ["2485410", "4156670", "3743720"]; // main game, demo, playtest
-        let totalCount = 0;
+        const response = await fetch('/api/playercount');
+        const json = await response.json();
         
-        const fetchPromises = appIds.map(appId =>
-            fetch(`https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}`)
-                .then(res => res.json())
-                .catch(err => {
-                    console.error(`Failed to fetch appid ${appId}:`, err);
-                    return null;
-                })
-        );
-        
-        const results = await Promise.all(fetchPromises);
-        
-        results.forEach(data => {
-            if (data && data.response && data.response.player_count) {
-                totalCount += data.response.player_count;
+        if (json.success && json.count) {
+            if (playerCountDiv) {
+                playerCountDiv.innerText = `${json.count.toLocaleString()} Ducks Online`;
             }
-        });
-        
-        if (playerCountDiv) {
-            playerCountDiv.innerText = `${totalCount.toLocaleString()} Ducks Online`;
+        } else {
+            if (playerCountDiv) {
+                playerCountDiv.innerText = "";
+            }
         }
     } catch (err) {
         if (playerCountDiv) {
@@ -43,26 +32,26 @@ async function fetchPlayerCount() {
 
 fetchPlayerCount();
 
-async function fetchPage(url) {
+async function fetchPage(page = null, perPage = null) {
+    let url = '/api/leaderboard';
+    const params = new URLSearchParams();
+    
+    if (page !== null) params.append('p', page);
+    if (perPage !== null) params.append('pp', perPage);
+    
+    const queryString = params.toString();
+    if (queryString) url += `?${queryString}`;
+
     const response = await fetch(url);
     if (!response.ok) throw new Error("HTTP error: " + response.status);
 
-    const text = await response.text();
+    const json = await response.json();
 
-    if (text.trim() === "Error") return [];
-
-    const cleaned = text.trim().replace(/^\d+\s*/, ''); // remove page number
-    const regex = /([^,<>]+),(\d+)/g; // seperate name,xp and take out any < and >s
-    let match;
-    const results = [];
-
-    while ((match = regex.exec(cleaned)) !== null) {
-        results.push({ name: match[1].trim(), xp: parseInt(match[2]) });
+    if (!json.success) {
+        return { data: [], noMoreData: true };
     }
 
-    if (results.length === 0) return [];
-
-    return results;
+    return { data: json.data, noMoreData: json.noMoreData };
 }
 
 async function appendLeaderboard(players) {
@@ -84,10 +73,10 @@ async function loadInitialLeaderboard() {
     if (!tbody) return;
 
     try {
-        const page0 = await fetchPage("https://www.tunnelvision.it/API/leaderboard.php");
-        const page1 = await fetchPage("https://www.tunnelvision.it/API/leaderboard.php?p=1");
+        const page0 = await fetchPage();
+        const page1 = await fetchPage(1);
 
-        await appendLeaderboard([...page0, ...page1]);
+        await appendLeaderboard([...page0.data, ...page1.data]);
 
         if (loadingDiv) loadingDiv.style.display = "none";
         if (leaderboardTable) leaderboardTable.style.display = "table";
@@ -105,15 +94,15 @@ async function loadMoreLeaderboard() {
     loadMoreMessage.innerText = "";
 
     try {
-        const nextPage = await fetchPage(`https://www.tunnelvision.it/API/leaderboard.php?p=${currentPage}`);
+        const result = await fetchPage(currentPage);
 
-        if (nextPage.length === 0) {
+        if (result.noMoreData || result.data.length === 0) {
             loadMoreMessage.innerText = "No more leaderboard data or failed to load";
             loadMoreButton.style.display = "none";
             return;
         }
 
-        await appendLeaderboard(nextPage);
+        await appendLeaderboard(result.data);
         currentPage++;
     } catch (err) {
         loadMoreMessage.innerText = "No more leaderboard data or failed to load";
@@ -127,8 +116,8 @@ async function loadFullLeaderboard() {
     if (loadingDiv) loadingDiv.innerText = "Loading full leaderboard...";
 
     try {
-        const players = await fetchPage("https://www.tunnelvision.it/API/leaderboard.php?pp=20000"); // load top 20k players
-        await appendLeaderboard(players);
+        const result = await fetchPage(null, 20000); // load top 20k players
+        await appendLeaderboard(result.data);
 
         if (loadingDiv) loadingDiv.style.display = "none";
         if (leaderboardTable) leaderboardTable.style.display = "table";
