@@ -11,6 +11,7 @@ body {
 
 h1 {
     margin-top: 40px;
+    user-select: none;
 }
 
 table {
@@ -37,6 +38,13 @@ tr:hover {
 
 .loading {
     margin-top: 40px;
+}
+
+.message {
+    margin-top: 10px;
+    color: #ff5555;
+    font-size: 16px;
+    cursor: default;
 }
 
 .logo {
@@ -80,15 +88,11 @@ img.social{
     color: #7ac0de;
 }
 
-.loadMoreMessage {
-    margin-top:10px;
-    color:#ff5555;
-}
-
 .playerCount {
     color: #eeffaa;
     height: 20px;
     margin-top: 20px;
     font-size: 14px;
     line-height: 20px;
+    user-select: none;
 }
