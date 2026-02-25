@@ -83,7 +83,10 @@ async function loadInitialLeaderboard() {
         if (loadMoreButton) loadMoreButton.style.display = "inline-block";
 
     } catch (err) {
-        if (loadingDiv) loadingDiv.innerText = "Failed to load leaderboard";
+        if (loadingDiv) {
+            loadingDiv.innerText = "Failed to load leaderboard";
+            loadingDiv.classList.add("error");
+        }
         console.error(err);
     }
 }
@@ -98,6 +101,7 @@ async function loadMoreLeaderboard() {
 
         if (result.noMoreData || result.data.length === 0) {
             loadMoreMessage.innerText = "No more leaderboard data or failed to load";
+            loadMoreMessage.classList.add("error");
             loadMoreButton.style.display = "none";
             return;
         }
@@ -106,6 +110,7 @@ async function loadMoreLeaderboard() {
         currentPage++;
     } catch (err) {
         loadMoreMessage.innerText = "No more leaderboard data or failed to load";
+        loadMoreMessage.classList.add("error");
         loadMoreButton.style.display = "none";
         console.error(err);
     }
@@ -123,7 +128,10 @@ async function loadFullLeaderboard() {
         if (leaderboardTable) leaderboardTable.style.display = "table";
 
     } catch (err) {
-        if (loadingDiv) loadingDiv.innerText = "Failed to load full leaderboard";
+        if (loadingDiv) {
+            loadingDiv.innerText = "Failed to load full leaderboard";
+            loadingDiv.classList.add("error");
+        }
         console.error(err);
     }
 }

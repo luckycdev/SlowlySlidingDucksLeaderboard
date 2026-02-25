@@ -42,9 +42,12 @@ tr:hover {
 
 .message {
     margin-top: 10px;
-    color: #ff5555;
     font-size: 16px;
     cursor: default;
+}
+
+.error {
+    color: #ff5555;
 }
 
 .logo {
