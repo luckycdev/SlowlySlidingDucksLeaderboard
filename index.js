@@ -1,4 +1,3 @@
-const PROXY = "https://corsproxy.io/?url=";
 let totalPlayers = 0;
 let currentPage = 2; // first 2 pages already loaded
 
@@ -15,7 +14,7 @@ async function fetchPlayerCount() {
         let totalCount = 0;
         
         const fetchPromises = appIds.map(appId =>
-            fetch(PROXY + `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}`)
+            fetch(`https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${appId}`)
                 .then(res => res.json())
                 .catch(err => {
                     console.error(`Failed to fetch appid ${appId}:`, err);
@@ -45,7 +44,7 @@ async function fetchPlayerCount() {
 fetchPlayerCount();
 
 async function fetchPage(url) {
-    const response = await fetch(PROXY + url);
+    const response = await fetch(url);
     if (!response.ok) throw new Error("HTTP error: " + response.status);
 
     const text = await response.text();
