@@ -29,6 +29,11 @@ th, td {
     width: 33.33%;
 }
 
+td:nth-child(2) {/*this is for long names expanding the page width on mobile*/
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
 th {
     background: #1c1c1c;
 }
@@ -85,7 +90,7 @@ img.social{
 
 .other-page {
     position: fixed;
-    right: 0px;
+    right: 10px;
     top: 0px;
     margin: 20px;
     font-size: 16px;
