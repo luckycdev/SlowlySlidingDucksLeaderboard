@@ -3,6 +3,7 @@ html {
 }
 
 body {
+    margin-top: 50px;
     background: #0c0c0c;
     color: white;
     font-family: Arial, sans-serif;
@@ -98,4 +99,18 @@ img.social{
     font-size: 14px;
     line-height: 20px;
     user-select: none;
+}
+
+.playerCount.error {
+    color: #ff5555;
+}
+
+@media (max-width: 680px) { /*this is bc the steam widget is too wide on mobile making the page wider*/
+    .steam-widget {
+        display: block;
+        width: 100%;
+        max-width: 646px;
+        margin: 20px auto 0;
+        height: 240px;
+    }
 }

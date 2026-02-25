@@ -13,18 +13,21 @@ async function fetchPlayerCount() {
         const response = await fetch('/api/playercount');
         const json = await response.json();
         
-        if (json.success && json.count) {
+        if (json.success && typeof json.count === "number") {
             if (playerCountDiv) {
                 playerCountDiv.innerText = `${json.count.toLocaleString()} Ducks Online`;
+                playerCountDiv.classList.remove("error");
             }
         } else {
             if (playerCountDiv) {
-                playerCountDiv.innerText = "";
+                playerCountDiv.innerText = "Failed to load player count";
+                playerCountDiv.classList.add("error");
             }
         }
     } catch (err) {
         if (playerCountDiv) {
-            playerCountDiv.innerText = "";
+            playerCountDiv.innerText = "Failed to load player count";
+            playerCountDiv.classList.add("error");
         }
         console.error("Failed to fetch player count:", err);
     }
