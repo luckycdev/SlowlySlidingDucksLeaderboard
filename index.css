@@ -15,6 +15,23 @@ h1 {
     user-select: none;
 }
 
+.status-warning {
+    max-width: 700px;
+    margin: 20px auto 0;
+    padding: 14px 16px;
+    border: 1px solid #ff7b7b;
+    border-radius: 10px;
+    background: #4a1313;
+    color: #ffd6d6;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.status-warning a {
+    color: #7ac0de;
+    font-weight: bold;
+}
+
 table {
     margin: 30px auto;
     border-collapse: collapse;

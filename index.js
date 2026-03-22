@@ -139,4 +139,35 @@ async function loadFullLeaderboard() {
     }
 }
 
+async function loadBackupLeaderboard() {
+
+    if (loadingDiv) loadingDiv.innerText = "Loading backup leaderboard...";
+
+    try {
+        const response = await fetch('/backup/backup.txt');
+        if (!response.ok) throw new Error("HTTP error: " + response.status);
+
+        const text = await response.text();
+        const data = text.trim().split(/\r?\n/).map((line) => {
+            const comma = line.lastIndexOf(',');
+            return {
+                name: line.slice(0, comma),
+                xp: Number(line.slice(comma + 1))
+            };
+        });
+
+        await appendLeaderboard(data);
+
+        if (loadingDiv) loadingDiv.style.display = "none";
+        if (leaderboardTable) leaderboardTable.style.display = "table";
+
+    } catch (err) {
+        if (loadingDiv) {
+            loadingDiv.innerText = "Failed to load backup leaderboard";
+            loadingDiv.classList.add("error");
+        }
+        console.error(err);
+    }
+}
+
 loadMoreButton?.addEventListener("click", loadMoreLeaderboard);
