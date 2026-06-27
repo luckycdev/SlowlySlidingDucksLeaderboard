@@ -43,7 +43,7 @@ export default async function handler(req, res) {
         }
 
         const cleaned = text.trim().replace(/^\d+\s*/, ''); // remove page number
-        const regex = /([^,<>]+),(\d+)/g; // seperate name,xp and take out any < and >s 
+        const regex = /(?:^|\s)(?!-?\d+(?:\s|,))([^,<>]+),(\d+)/g; // get name,xp and take out any < and >s
         let match;
         const results = [];
 
